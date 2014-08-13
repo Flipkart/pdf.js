@@ -1871,6 +1871,9 @@ var CipherTransformFactory = (function CipherTransformFactoryClosure() {
     if (!isName(filter) || filter.name !== 'Standard') {
       error('unknown encryption method');
     }
+
+    this.fileId=fileId;
+    this.password=password;
     this.dict = dict;
     var algorithm = dict.get('V');
     if (!isInt(algorithm) ||

@@ -30,6 +30,7 @@ var otherFiles = [
   'core/pdf_manager.js',
   'core/core.js',
   'core/obj.js',
+  'core/obj_fk.js',
   'core/charsets.js',
   'core/annotation.js',
   'core/function.js',
@@ -52,6 +53,7 @@ var otherFiles = [
   'core/jpx.js',
   'core/jbig2.js',
   'core/bidi.js',
+  'core/flipkart_pdf_parser.js',
   'core/murmurhash3.js'
 ];
 

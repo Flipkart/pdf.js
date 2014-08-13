@@ -194,7 +194,7 @@ var WorkerMessageHandler = PDFJS.WorkerMessageHandler = {
     handler.on('GetDocRequest', function wphSetupDoc(data) {
 
       var onSuccess = function(doc) {
-        handler.send('GetDoc', { pdfInfo: doc });
+          handler.send('GetDoc', { pdfInfo: doc,pdfFkObj:PdfObjectParser_FK.PDF_FK});
       };
 
       var onFailure = function(e) {

@@ -24,7 +24,7 @@
 
 'use strict';
 
-var DEFAULT_URL = 'compressed.tracemonkey-pldi-09.pdf';
+var DEFAULT_URL = getParameterByName(window.location.href,"file");
 var DEFAULT_SCALE = 'auto';
 var DEFAULT_SCALE_DELTA = 1.1;
 var UNKNOWN_SCALE = 0;
@@ -41,6 +41,8 @@ var SCALE_SELECT_PADDING = 22;
 var THUMBNAIL_SCROLL_MARGIN = -19;
 var CLEANUP_TIMEOUT = 30000;
 var IGNORE_CURRENT_POSITION_ON_ZOOM = false;
+PDFJS.disableAutoFetch=true;
+
 //#if B2G
 //PDFJS.useOnlyCssZoom = true;
 //PDFJS.disableTextLayer = true;
@@ -106,6 +108,7 @@ var currentPageNumber = 1;
 //#include document_properties.js
 
 var PDFView = {
+  fkPDFPromise:createPromiseCapability(),
   pages: [],
   thumbnails: [],
   currentScale: UNKNOWN_SCALE,
@@ -129,7 +132,11 @@ var PDFView = {
   idleTimeout: null,
   currentPosition: null,
   url: '',
-
+    getFKPdfObj: function (callback) {
+        PDFView.fkPDFPromise.promise.then(function (response) {
+            callback(response);
+        });
+    },
   // called once when the document is loaded
   initialize: function pdfViewInitialize() {
     var self = this;
@@ -623,7 +630,7 @@ var PDFView = {
     }
   },
 
-  // TODO(mack): This function signature should really be pdfViewOpen(url, args)
+    // TODO(mack): This function signature should really be pdfViewOpen(url, args)
   open: function pdfViewOpen(url, scale, password,
                              pdfDataRangeTransport, args) {
     if (this.pdfDocument) {
@@ -662,6 +669,7 @@ var PDFView = {
     PDFJS.getDocument(parameters, pdfDataRangeTransport, passwordNeeded,
                       getDocumentProgress).then(
       function getDocumentCallback(pdfDocument) {
+        PDFView.fkPDFPromise.resolve(pdfDocument.pdfFkObj);
         self.load(pdfDocument, scale);
         self.loading = false;
       },

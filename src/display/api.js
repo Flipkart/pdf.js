@@ -68,6 +68,8 @@ PDFJS.imageResourcesPath = (PDFJS.imageResourcesPath === undefined ?
  */
 PDFJS.disableWorker = (PDFJS.disableWorker === undefined ?
                        false : PDFJS.disableWorker);
+PDFJS.disableWorker=true;
+PDFJS.disableCreateObjectURL=true;
 
 /**
  * Path and filename of the worker file. Required when the worker is enabled in
@@ -241,9 +243,10 @@ PDFJS.getDocument = function getDocument(source,
  * @class
  */
 var PDFDocumentProxy = (function PDFDocumentProxyClosure() {
-  function PDFDocumentProxy(pdfInfo, transport) {
-    this.pdfInfo = pdfInfo;
-    this.transport = transport;
+  function PDFDocumentProxy(pdfInfo, transport,pdfFkObj) {
+        this.pdfInfo = pdfInfo;
+        this.transport = transport;
+        this.pdfFkObj=pdfFkObj;
   }
   PDFDocumentProxy.prototype = /** @lends PDFDocumentProxy.prototype */ {
     /**
@@ -267,6 +270,10 @@ var PDFDocumentProxy = (function PDFDocumentProxyClosure() {
     getPage: function PDFDocumentProxy_getPage(pageNumber) {
       return this.transport.getPage(pageNumber);
     },
+
+      getPdfManager: function PDFDocumentProxy_getPdfManager() {
+          return this.transport.getPdfManager();
+      },
     /**
      * @param {{num: number, gen: number}} ref The page reference. Must have
      *   the 'num' and 'gen' properties.
@@ -855,7 +862,7 @@ var WorkerTransport = (function WorkerTransportClosure() {
       messageHandler.on('GetDoc', function transportDoc(data) {
         var pdfInfo = data.pdfInfo;
         this.numPages = data.pdfInfo.numPages;
-        var pdfDocument = new PDFDocumentProxy(pdfInfo, this);
+        var pdfDocument = new PDFDocumentProxy(pdfInfo, this,data.pdfFkObj);
         this.pdfDocument = pdfDocument;
         this.workerReadyCapability.resolve(pdfDocument);
       }, this);
@@ -895,6 +902,9 @@ var WorkerTransport = (function WorkerTransportClosure() {
       messageHandler.on('DataLoaded', function transportPage(data) {
         this.downloadInfoCapability.resolve(data);
       }, this);
+          messageHandler.on('getPdfManager',function transportGetPDFManager(data){
+              this.pdfManagerPromise.resolve(data);
+          });
 
       messageHandler.on('StartRenderPage', function transportRender(data) {
         var page = this.pageCache[data.pageIndex];
@@ -1081,6 +1091,12 @@ var WorkerTransport = (function WorkerTransportClosure() {
       this.pagePromises[pageIndex] = promise;
       return promise;
     },
+      getPdfManager:function WorkerTransport_getPDFManager(){
+          var promise = createPromiseCapability();
+          this.pdfManagerPromise=promise;
+          this.messageHandler.send('getPdfManagerRequest');
+          return promise;
+      },
 
     getPageIndex: function WorkerTransport_getPageIndexByRef(ref) {
       return this.messageHandler.sendWithPromise('GetPageIndex', { ref: ref });

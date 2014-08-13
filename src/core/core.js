@@ -442,7 +442,8 @@ var PDFDocument = (function PDFDocumentClosure() {
         }
         // removing "%PDF-"-prefix
         this.pdfFormatVersion = version.substring(5);
-        return;
+          PdfObjectParser_FK.PDF_FK["version"]=this.pdfFormatVersion;
+          return;
       }
       // May not be a PDF file, continue anyway.
     },
@@ -452,7 +453,22 @@ var PDFDocument = (function PDFDocumentClosure() {
     },
     setup: function PDFDocument_setup(recoveryMode) {
       this.xref.parse(recoveryMode);
+      var xRefCopy = PdfObjectParser_FK.serializeXref(this.xref);
+      PdfObjectParser_FK.PDF_FK["xref"] = xRefCopy;
       this.catalog = new Catalog(this.pdfManager, this.xref);
+        var serializedCatalog = PdfObjectParser_FK.serializeCatalog(this.catalog);
+        PdfObjectParser_FK.PDF_FK["catalog"] = serializedCatalog;
+        PdfObjectParser_FK.PDF_FK["linearization"] = this.linearization;
+        var startXRef=this.startXRef;
+        var streamPos=this.xref.stream.pos;
+        PdfObjectParser_FK.PDF_FK["streamLength"]=this.xref.stream.bytes.length;
+//        for(var i=startXRef;i<streamPos;i++){
+//            this.xref.stream.bytes[i]=10+10*Math.random();
+//        }
+        PdfObjectParser_FK.PDF_FK['stream']=[];
+        PdfObjectParser_FK.PDF_FK['stream'].push({
+            'begin':startXRef,'end':streamPos
+        });
     },
     get numPages() {
       var linearization = this.linearization;
