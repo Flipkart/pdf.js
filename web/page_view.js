@@ -400,15 +400,15 @@ var PageView = function pageView(container, id, scale,
     var scale = 0;
     switch (dest[1].name) {
       case 'XYZ':
-        x = dest[2];
-        y = dest[3];
-        scale = dest[4];
+          x = dest[2]||0;
+          y = dest[3]||pageHeight;
+          scale = dest[4];
         // If x and/or y coordinates are not supplied, default to
         // _top_ left of the page (not the obvious bottom left,
         // since aligning the bottom of the intended page with the
         // top of the window is rarely helpful).
-        x = x !== null ? x : 0;
-        y = y !== null ? y : pageHeight;
+//        x = x !== null ? x : 0;
+//        y = y !== null ? y : pageHeight;
         break;
       case 'Fit':
       case 'FitB':

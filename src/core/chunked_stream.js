@@ -427,25 +427,31 @@ var ChunkedStreamManager = (function ChunkedStreamManagerClosure() {
       var groupedChunks = [];
       var beginChunk = -1;
       var prevChunk = -1;
-      for (var i = 0; i < chunks.length; ++i) {
-        var chunk = chunks[i];
-
-        if (beginChunk < 0) {
-          beginChunk = chunk;
+        for(var i = 0; i < chunks.length; ++i){
+            groupedChunks.push(
+                { beginChunk: chunks[i],
+                    endChunk: chunks[i] + 1 }
+            )
         }
-
-        if (prevChunk >= 0 && prevChunk + 1 !== chunk) {
-          groupedChunks.push({ beginChunk: beginChunk,
-                               endChunk: prevChunk + 1 });
-          beginChunk = chunk;
-        }
-        if (i + 1 === chunks.length) {
-          groupedChunks.push({ beginChunk: beginChunk,
-                               endChunk: chunk + 1 });
-        }
-
-        prevChunk = chunk;
-      }
+//      for (var i = 0; i < chunks.length; ++i) {
+//        var chunk = chunks[i];
+//
+//        if (beginChunk < 0) {
+//          beginChunk = chunk;
+//        }
+//
+//        if (prevChunk >= 0 && prevChunk + 1 !== chunk) {
+//          groupedChunks.push({ beginChunk: beginChunk,
+//                               endChunk: prevChunk + 1 });
+//          beginChunk = chunk;
+//        }
+//        if (i + 1 === chunks.length) {
+//          groupedChunks.push({ beginChunk: beginChunk,
+//                               endChunk: chunk + 1 });
+//        }
+//
+//        prevChunk = chunk;
+//      }
       return groupedChunks;
     },
 

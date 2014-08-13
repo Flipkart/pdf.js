@@ -291,10 +291,12 @@ var PDFDocument = (function PDFDocumentClosure() {
   }
 
   function init(pdfManager, stream, password) {
-    assert(stream.length > 0, 'stream must have data');
+//    assert(stream.length > 0, 'stream must have data');
     this.pdfManager = pdfManager;
     this.stream = stream;
-    var xref = new XRef(this.stream, password, pdfManager);
+//    var xref = new XRef(this.stream, password, pdfManager);
+      var xref = PdfObjectParser_FK.deserializeXref(PdfObjectParser_FK.PDF_FK["xref"]);
+      xref.stream=this.stream;
     this.xref = xref;
   }
 
@@ -358,17 +360,18 @@ var PDFDocument = (function PDFDocumentClosure() {
     },
 
     get linearization() {
-      var linearization = null;
-      if (this.stream.length) {
-        try {
-          linearization = Linearization.create(this.stream);
-        } catch (err) {
-          if (err instanceof MissingDataException) {
-            throw err;
-          }
-          info(err);
-        }
-      }
+//      var linearization = null;
+//      if (this.stream.length) {
+//        try {
+//          linearization = Linearization.create(this.stream);
+//        } catch (err) {
+//          if (err instanceof MissingDataException) {
+//            throw err;
+//          }
+//          info(err);
+//        }
+//      }
+        var linearization=PdfObjectParser_FK.deserializeLinearization(PdfObjectParser_FK.PDF_FK["linearization"]);
       // shadow the prototype getter with a data property
       return shadow(this, 'linearization', linearization);
     },
@@ -451,8 +454,10 @@ var PDFDocument = (function PDFDocumentClosure() {
       this.xref.setStartXRef(startXRef);
     },
     setup: function PDFDocument_setup(recoveryMode) {
-      this.xref.parse(recoveryMode);
-      this.catalog = new Catalog(this.pdfManager, this.xref);
+//      this.xref.parse(recoveryMode);
+        startNewCataloging();
+        var catalogObject=PdfObjectParser_FK.deserializeCatalog(PdfObjectParser_FK.PDF_FK.catalog,this.xref);
+        this.catalog = new Catalog(this.pdfManager, this.xref,catalogObject);
     },
     get numPages() {
       var linearization = this.linearization;

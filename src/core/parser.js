@@ -824,7 +824,7 @@ var Lexer = (function LexerClosure() {
 })();
 
 var Linearization = {
-  create: function LinearizationCreate(stream) {
+  create: function LinearizationCreate(stream,linDictObj) {
     function getInt(name, allowZeroValue) {
       var obj = linDict.get(name);
       if (isInt(obj) && (allowZeroValue ? obj >= 0 : obj > 0)) {
@@ -847,6 +847,9 @@ var Linearization = {
       }
       throw new Error('Hint array in the linearization dictionary is invalid.');
     }
+    if(linDict){
+        this.linDict=linDictObj;
+    }else{
     var parser = new Parser(new Lexer(stream), false, null);
     var obj1 = parser.getObj();
     var obj2 = parser.getObj();
@@ -859,6 +862,7 @@ var Linearization = {
     } else if ((length = getInt('L')) !== stream.length) {
       throw new Error('The "L" parameter in the linearization dictionary ' +
                       'does not equal the stream length.');
+    }
     }
     return {
       length: length,

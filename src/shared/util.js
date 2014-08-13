@@ -1575,3 +1575,10 @@ function loadJpegStream(id, imageUrl, objs) {
   });
   img.src = imageUrl;
 }
+
+function getParameterByName(string, name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(string);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}

@@ -294,7 +294,7 @@ var RefSetCache = (function RefSetCacheClosure() {
 })();
 
 var Catalog = (function CatalogClosure() {
-  function Catalog(pdfManager, xref) {
+  function Catalog(pdfManager, xref,catalogObj) {
     this.pdfManager = pdfManager;
     this.xref = xref;
     this.catDict = xref.getCatalogObj();
@@ -303,6 +303,8 @@ var Catalog = (function CatalogClosure() {
       'catalog object is not a dictionary');
 
     this.pagePromises = [];
+    if (catalogObj)
+        this.catalogObj = PdfObjectParser_FK.deserializeCatalog(catalogObj, xref);
   }
 
   Catalog.prototype = {

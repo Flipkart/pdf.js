@@ -24,7 +24,23 @@
 
 'use strict';
 
-var DEFAULT_URL = 'compressed.tracemonkey-pldi-09.pdf';
+// /var DEFAULT_URL = 'compressed.tracemonkey-pldi-09.pdf';
+var HOST_DETAILS = {
+    athena: {
+        host: "localhost",
+        scheme: "http",
+        port: 8080,
+        metaPath: "/service/pdf/meta/",
+        chunkPath: "/service/pdf/chunk/",
+        getMetaUrl: function (id) {
+            return this.scheme + "://" + this.host + ":" + this.port + this.metaPath + id;
+        },
+        getChunkUrl: function (id, chunkNumber) {
+            return this.scheme + "://" + this.host + ":" + this.port + this.chunkPath + id + "/" + chunkNumber;
+        }
+    }
+}
+var DEFAULT_URL = getParameterByName(window.location.href, "file");
 var DEFAULT_SCALE = 'auto';
 var DEFAULT_SCALE_DELTA = 1.1;
 var UNKNOWN_SCALE = 0;
@@ -41,6 +57,7 @@ var SCALE_SELECT_PADDING = 22;
 var THUMBNAIL_SCROLL_MARGIN = -19;
 var CLEANUP_TIMEOUT = 30000;
 var IGNORE_CURRENT_POSITION_ON_ZOOM = false;
+PDFJS.disableAutoFetch = true;
 //#if B2G
 //PDFJS.useOnlyCssZoom = true;
 //PDFJS.disableTextLayer = true;
@@ -1953,9 +1970,18 @@ function webViewerInitialized() {
 //#endif
 
 //#if !B2G && !CHROME
-  if (file) {
-    PDFView.open(file, 0);
-  }
+    if (file) {
+//      $.getJSON("http://localhost:8000/service/pdf/meta/"+DEFAULT_URL).success(function(res){
+        $.getJSON(HOST_DETAILS.athena.getMetaUrl(DEFAULT_URL)).success(function (res) {
+            if (res instanceof String)
+                res = JSON.parse(res);
+            res = JSON.parse(_DD.toString(res, true));
+            PDFJS.PDF_FK = res["meta"]["meta"];
+            PDFView.open(file, 0);
+        }).error(function () {
+                alert("error downloading meta file");
+            });
+    }
 //#endif
 //#if CHROME
 //if (file) {

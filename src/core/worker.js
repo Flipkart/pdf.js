@@ -49,12 +49,12 @@ var WorkerMessageHandler = PDFJS.WorkerMessageHandler = {
         loadDocumentCapability.reject(e);
       };
 
-      pdfManager.ensureDoc('checkHeader', []).then(function() {
-        pdfManager.ensureDoc('parseStartXRef', []).then(function() {
+//      pdfManager.ensureDoc('checkHeader', []).then(function() {
+//        pdfManager.ensureDoc('parseStartXRef', []).then(function() {
           pdfManager.ensureDoc('parse', [recoveryMode]).then(
             parseSuccess, parseFailure);
-        }, parseFailure);
-      }, parseFailure);
+//        }, parseFailure);
+//      }, parseFailure);
 
       return loadDocumentCapability.promise;
     }
@@ -86,80 +86,82 @@ var WorkerMessageHandler = PDFJS.WorkerMessageHandler = {
         httpHeaders: source.httpHeaders,
         withCredentials: source.withCredentials
       });
-      var fullRequestXhrId = networkManager.requestFull({
-        onHeadersReceived: function onHeadersReceived() {
-          if (disableRange) {
-            return;
-          }
-
-          var fullRequestXhr = networkManager.getRequestXhr(fullRequestXhrId);
-          if (fullRequestXhr.getResponseHeader('Accept-Ranges') !== 'bytes') {
-            return;
-          }
-
-          var contentEncoding =
-            fullRequestXhr.getResponseHeader('Content-Encoding') || 'identity';
-          if (contentEncoding !== 'identity') {
-            return;
-          }
-
-          var length = fullRequestXhr.getResponseHeader('Content-Length');
-          length = parseInt(length, 10);
-          if (!isInt(length)) {
-            return;
-          }
-          source.length = length;
-          if (length <= 2 * RANGE_CHUNK_SIZE) {
-            // The file size is smaller than the size of two chunks, so it does
-            // not make any sense to abort the request and retry with a range
-            // request.
-            return;
-          }
-
-          // NOTE: by cancelling the full request, and then issuing range
-          // requests, there will be an issue for sites where you can only
-          // request the pdf once. However, if this is the case, then the
-          // server should not be returning that it can support range requests.
-          networkManager.abortRequest(fullRequestXhrId);
-
-          try {
-            pdfManager = new NetworkPdfManager(source, handler);
-            pdfManagerCapability.resolve(pdfManager);
-          } catch (ex) {
-            pdfManagerCapability.reject(ex);
-          }
-        },
-
-        onDone: function onDone(args) {
-          // the data is array, instantiating directly from it
-          try {
-            pdfManager = new LocalPdfManager(args.chunk, source.password);
-            pdfManagerCapability.resolve();
-          } catch (ex) {
-            pdfManagerCapability.reject(ex);
-          }
-        },
-
-        onError: function onError(status) {
-          if (status === 404) {
-            var exception = new MissingPDFException('Missing PDF "' +
-                                                    source.url + '".');
-            handler.send('MissingPDF', { exception: exception });
-          } else {
-            handler.send('DocError', 'Unexpected server response (' +
-                         status + ') while retrieving PDF "' +
-                         source.url + '".');
-          }
-        },
-
-        onProgress: function onProgress(evt) {
-          handler.send('DocProgress', {
-            loaded: evt.loaded,
-            total: evt.lengthComputable ? evt.total : source.length
-          });
-        }
-      });
-
+//      var fullRequestXhrId = networkManager.requestFull({
+//        onHeadersReceived: function onHeadersReceived() {
+//          if (disableRange) {
+//            return;
+//          }
+//
+//          var fullRequestXhr = networkManager.getRequestXhr(fullRequestXhrId);
+//          if (fullRequestXhr.getResponseHeader('Accept-Ranges') !== 'bytes') {
+//            return;
+//          }
+//
+//          var contentEncoding =
+//            fullRequestXhr.getResponseHeader('Content-Encoding') || 'identity';
+//          if (contentEncoding !== 'identity') {
+//            return;
+//          }
+//
+//          var length = fullRequestXhr.getResponseHeader('Content-Length');
+//          length = parseInt(length, 10);
+//          if (!isInt(length)) {
+//            return;
+//          }
+//          source.length = length;
+//          if (length <= 2 * RANGE_CHUNK_SIZE) {
+//            // The file size is smaller than the size of two chunks, so it does
+//            // not make any sense to abort the request and retry with a range
+//            // request.
+//            return;
+//          }
+//
+//          // NOTE: by cancelling the full request, and then issuing range
+//          // requests, there will be an issue for sites where you can only
+//          // request the pdf once. However, if this is the case, then the
+//          // server should not be returning that it can support range requests.
+//          networkManager.abortRequest(fullRequestXhrId);
+//
+//          try {
+//            pdfManager = new NetworkPdfManager(source, handler);
+//            pdfManagerCapability.resolve(pdfManager);
+//          } catch (ex) {
+//            pdfManagerCapability.reject(ex);
+//          }
+//        },
+//
+//        onDone: function onDone(args) {
+//          // the data is array, instantiating directly from it
+//          try {
+//            pdfManager = new LocalPdfManager(args.chunk, source.password);
+//            pdfManagerCapability.resolve();
+//          } catch (ex) {
+//            pdfManagerCapability.reject(ex);
+//          }
+//        },
+//
+//        onError: function onError(status) {
+//          if (status === 404) {
+//            var exception = new MissingPDFException('Missing PDF "' +
+//                                                    source.url + '".');
+//            handler.send('MissingPDF', { exception: exception });
+//          } else {
+//            handler.send('DocError', 'Unexpected server response (' +
+//                         status + ') while retrieving PDF "' +
+//                         source.url + '".');
+//          }
+//        },
+//
+//        onProgress: function onProgress(evt) {
+//          handler.send('DocProgress', {
+//            loaded: evt.loaded,
+//            total: evt.lengthComputable ? evt.total : source.length
+//          });
+//        }
+//      });
+        source.length=PdfObjectParser_FK.PDF_FK["streamLength"];
+        pdfManager = new NetworkPdfManager(source, handler);
+        pdfManagerPromise.resolve(pdfManager);
       return pdfManagerCapability.promise;
     }
 
@@ -231,6 +233,7 @@ var WorkerMessageHandler = PDFJS.WorkerMessageHandler = {
       PDFJS.cMapUrl = data.cMapUrl === undefined ?
                            null : data.cMapUrl;
       PDFJS.cMapPacked = data.cMapPacked === true;
+      PdfObjectParser_FK.PDF_FK=data["source"]["PDF_FK"];
 
       getPdfManager(data).then(function () {
         pdfManager.onLoadedStream().then(function(stream) {

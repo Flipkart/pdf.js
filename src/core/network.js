@@ -67,12 +67,15 @@ var NetworkManager = (function NetworkManagerClosure() {
     if (typeof data !== 'string') {
       return data;
     }
-    var length = data.length;
-    var buffer = new Uint8Array(length);
-    for (var i = 0; i < length; i++) {
-      buffer[i] = data.charCodeAt(i) & 0xFF;
-    }
-    return buffer;
+      var jsonData = JSON.parse(data);
+//      var length = data.length;
+//    var buffer = new Uint8Array(length);
+//    for (var i = 0; i < length; i++) {
+//      buffer[i] = data.charCodeAt(i) & 0xFF;
+//    }
+//    return buffer;
+    return _DD.toString(jsonData);
+
   }
 
   NetworkManager.prototype = {
@@ -97,26 +100,31 @@ var NetworkManager = (function NetworkManagerClosure() {
       var pendingRequest = this.pendingRequests[xhrId] = {
         xhr: xhr
       };
-
-      xhr.open('GET', this.url);
+      var chunkReq = Math.ceil((args.end || 0) / RANGE_CHUNK_SIZE);
+      chunkReq = chunkReq || 1;
+//      xhr.open('GET',"http://localhost:8000/service/pdf/chunk/" + DEFAULT_URL + "/" + (chunkReq));
+      xhr.open('GET',HOST_DETAILS.getChunkUrl(DEFAULT_URL,chunkReq));
+//      xhr.open('GET', this.url);
       xhr.withCredentials = this.withCredentials;
-      for (var property in this.httpHeaders) {
-        var value = this.httpHeaders[property];
-        if (typeof value === 'undefined') {
-          continue;
-        }
-        xhr.setRequestHeader(property, value);
-      }
-      if (this.isHttp && 'begin' in args && 'end' in args) {
-        var rangeStr = args.begin + '-' + (args.end - 1);
-        xhr.setRequestHeader('Range', 'bytes=' + rangeStr);
-        pendingRequest.expectedStatus = 206;
-      } else {
+//      for (var property in this.httpHeaders) {
+//        var value = this.httpHeaders[property];
+//        if (typeof value === 'undefined') {
+//          continue;
+//        }
+//        xhr.setRequestHeader(property, value);
+//      }
+//      if (this.isHttp && 'begin' in args && 'end' in args) {
+//        var rangeStr = args.begin + '-' + (args.end - 1);
+//        xhr.setRequestHeader('Range', 'bytes=' + rangeStr);
+//        pendingRequest.expectedStatus = 206;
+//      } else {
         pendingRequest.expectedStatus = 200;
-      }
+//      }
 
-      xhr.responseType = 'arraybuffer';
-
+//      xhr.responseType = 'arraybuffer';
+      xhr.args = {};
+      xhr.args.begin = (chunkReq - 1) * RANGE_CHUNK_SIZE;
+      xhr.args.end = (chunkReq) * RANGE_CHUNK_SIZE;
       if (args.onProgress) {
         xhr.onprogress = args.onProgress;
       }
@@ -198,7 +206,7 @@ var NetworkManager = (function NetworkManagerClosure() {
         });
       } else {
         pendingRequest.onDone({
-          begin: 0,
+          begin: xhr.args.begin || 0,
           chunk: chunk
         });
       }

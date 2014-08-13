@@ -20,7 +20,7 @@
 'use strict';
 
 // The maximum number of bytes fetched per range request
-var RANGE_CHUNK_SIZE = 65536;
+var RANGE_CHUNK_SIZE = 66560;
 
 // TODO(mack): Make use of PDFJS.Util.inherit() when it becomes available
 var BasePdfManager = (function BasePdfManagerClosure() {

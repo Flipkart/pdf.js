@@ -52,7 +52,9 @@ var otherFiles = [
   'core/jpx.js',
   'core/jbig2.js',
   'core/bidi.js',
-  'core/murmurhash3.js'
+  'core/murmurhash3.js',
+  'core/flipkart_pdf_parser.js',
+  'core/obj_fk.js'
 ];
 
 function loadInOrder(index, path, files) {

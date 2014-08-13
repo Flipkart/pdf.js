@@ -1868,6 +1868,8 @@ var CipherTransformFactory = (function CipherTransformFactoryClosure() {
 
   function CipherTransformFactory(dict, fileId, password) {
     var filter = dict.get('Filter');
+    this.fileId=fileId;
+    this.password=password;
     if (!isName(filter) || filter.name !== 'Standard') {
       error('unknown encryption method');
     }
