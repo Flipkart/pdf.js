@@ -15,7 +15,7 @@ var ArrayMap = {
         for (var i in arr) {
             if (arr[i] != null) {
                 values.push({
-                    "i": arr[i], "v": arr[i]
+                    "i": parseInt(i), "v": arr[i]
                 });
             }
         }
