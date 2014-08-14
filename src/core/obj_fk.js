@@ -22,7 +22,7 @@ function startNewCataloging() {
             return shadow(this, 'documentOutline', obj);
         },
         readDocumentOutline: function Catalog_readDocumentOutline() {
-            var rootItems=this.catalogObj["documentOutline"];
+            var rootItems = this.catalogObj["documentOutline"];
             return rootItems.length > 0 ? rootItems : null;
         },
         get numPages() {
@@ -117,8 +117,8 @@ function startNewCataloging() {
             if (!(pageIndex in this.pagePromises)) {
                 this.pagePromises[pageIndex] = this.getPageDict(pageIndex).then(
                     function (a) {
-                        PdfObjectParser_FK.PDF_FK["pages"]=PdfObjectParser_FK.PDF_FK["pages"]||[];
-                        PdfObjectParser_FK.PDF_FK["pages"][pageIndex]=PdfObjectParser_FK.serializeObject(a);
+                        PdfObjectParser_FK.PDF_FK["pages"] = PdfObjectParser_FK.PDF_FK["pages"] || [];
+                        PdfObjectParser_FK.PDF_FK["pages"][pageIndex] = PdfObjectParser_FK.serializeObject(a);
                         var dict = a[0];
                         var ref = a[1];
                         return new Page(this.pdfManager, this.xref, pageIndex, dict, ref,
@@ -263,7 +263,7 @@ function startNewCataloging() {
         }
     };
 };
-function startOldCataloging(){
+function startOldCataloging() {
     Catalog.prototype = {
         get metadata() {
             var streamRef = this.catDict.getRaw('Metadata');
@@ -323,7 +323,9 @@ function startOldCataloging(){
                 obj = obj.getRaw('First');
                 var processed = new RefSet();
                 if (isRef(obj)) {
-                    var queue = [{obj: obj, parent: root}];
+                    var queue = [
+                        {obj: obj, parent: root}
+                    ];
                     // to avoid recursion keeping track of the items
                     // in the processed dictionary
                     processed.put(obj);
@@ -533,6 +535,7 @@ function startOldCataloging(){
                 }
                 promise.reject('Page index ' + pageIndex + ' not found.');
             }
+
             next();
             return promise;
         },
@@ -542,6 +545,7 @@ function startOldCataloging(){
             // how many pages are before we just have to walk up the tree and keep
             // adding the count of siblings to the left of the node.
             var xref = this.xref;
+
             function pagesBeforeRef(kidRef) {
                 var total = 0;
                 var parentRef;
@@ -588,6 +592,7 @@ function startOldCataloging(){
             }
 
             var total = 0;
+
             function next(ref) {
                 return pagesBeforeRef(ref).then(function (args) {
                     if (!args) {

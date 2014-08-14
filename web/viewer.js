@@ -134,7 +134,7 @@ var PDFView = {
   url: '',
     getFKPdfObj: function (callback) {
         PDFView.fkPDFPromise.promise.then(function (response) {
-            callback(response);
+            callback(JSON.stringify(response));
         });
     },
   // called once when the document is loaded
