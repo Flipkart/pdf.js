@@ -68,6 +68,7 @@ PDFJS.imageResourcesPath = (PDFJS.imageResourcesPath === undefined ?
  */
 PDFJS.disableWorker = (PDFJS.disableWorker === undefined ?
                        false : PDFJS.disableWorker);
+PDFJS.disableWorker=true;
 
 /**
  * Path and filename of the worker file. Required when the worker is enabled in
@@ -94,7 +95,7 @@ PDFJS.disableRange = (PDFJS.disableRange === undefined ?
  */
 PDFJS.disableAutoFetch = (PDFJS.disableAutoFetch === undefined ?
                           false : PDFJS.disableAutoFetch);
-
+PDFJS.disableAutoFetch=true;
 /**
  * Enables special hooks for debugging PDF.js.
  * @var {boolean}
@@ -222,6 +223,7 @@ PDFJS.getDocument = function getDocument(source,
     }
     params[key] = source[key];
   }
+    params["PDF_FK"]=PDFJS.PDF_FK;
 
   workerInitializedCapability = createPromiseCapability();
   workerReadyCapability = createPromiseCapability();

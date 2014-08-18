@@ -8,7 +8,32 @@ var FKPDFUtil = {
         ;
         return a;
     }
-}
+};
+var ArrayMap = {
+    toArrayMap: function (arr) {
+        var values = [];
+        for (var i in arr) {
+            if (arr[i] != null) {
+                values.push({
+                    "i": i, "v": arr[i]
+                });
+            }
+        }
+        return {
+            "objectType": PdfObjectMapper_FK.Commands.ARRAY_MAP,
+            "values": values
+        }
+    },
+    fromArrayMap: function (map) {
+        if (map["objectType"] == PdfObjectMapper_FK.Commands.ARRAY_MAP) {
+            var arr = [];
+            for (var i = 0; i < map["values"].length; i++) {
+                arr[map["values"][i]["i"]] = map["values"][i]["v"];
+            }
+            return arr;
+        }
+    }
+};
 var PdfObjectMapper_FK = {
     Commands: {
         INLINE_IMAGE: "InlineImage",
@@ -22,7 +47,8 @@ var PdfObjectMapper_FK = {
         NAME: "Name",
         STRING: "String",
         SIMPLE_OBJECT: "SimpleObject",
-        CIPHER_TRANSFORM_FACTORY: "CipherTransformFactory"
+        CIPHER_TRANSFORM_FACTORY: "CipherTransformFactory",
+        ARRAY_MAP:"ArrayMap"
     }
 
 
@@ -141,6 +167,8 @@ var PdfObjectParser_FK = {
                     refSetCache["dict"] = objectType.dict;
                     return refSetCache;
                     break;
+                case PdfObjectMapper_FK.Commands.ARRAY_MAP:
+                    return ArrayMap.fromArrayMap(dummyObj);
                 default:
                     return dummyObj;
             }
@@ -233,7 +261,7 @@ var PdfObjectParser_FK = {
         if(dummyLinearization===false){
             return false;
         }
-        return new Linearization(null,this.deserializeObject(dummyLinearization["linDict"],xref));
+        return Linearization.createFromMeta(null,dummyLinearization);
     },
     serializeCatalog: function (catalog) {
         var catalogCopy = Object.create(null);

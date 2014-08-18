@@ -103,7 +103,7 @@ var NetworkManager = (function NetworkManagerClosure() {
       var chunkReq = Math.ceil((args.end || 0) / RANGE_CHUNK_SIZE);
       chunkReq = chunkReq || 1;
 //      xhr.open('GET',"http://localhost:8000/service/pdf/chunk/" + DEFAULT_URL + "/" + (chunkReq));
-      xhr.open('GET',HOST_DETAILS.getChunkUrl(DEFAULT_URL,chunkReq));
+      xhr.open('GET',HOST_DETAILS.athena.getChunkUrl(DEFAULT_URL,chunkReq));
 //      xhr.open('GET', this.url);
       xhr.withCredentials = this.withCredentials;
 //      for (var property in this.httpHeaders) {

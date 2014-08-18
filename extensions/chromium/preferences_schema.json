@@ -46,7 +46,7 @@
     },
     "disableAutoFetch": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "disableFontFace": {
       "title": "Disable @font-face",

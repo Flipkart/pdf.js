@@ -115,7 +115,7 @@ function startNewCataloging() {
 
         getPage: function Catalog_getPage(pageIndex) {
             if (!(pageIndex in this.pagePromises)) {
-                this.pagePromises[pageIndex] = this.getPageDict(pageIndex).then(
+                this.pagePromises[pageIndex] = this.getPageDict(pageIndex).promise.then(
                     function (a) {
 //                        PdfObjectParser_FK.PDF_FK["pages"]=PdfObjectParser_FK.PDF_FK["pages"]||[];
 //                        PdfObjectParser_FK.PDF_FK["pages"][pageIndex]=PdfObjectParser_FK.serializeObject(a);
@@ -130,7 +130,7 @@ function startNewCataloging() {
         },
 
         getPageDict: function Catalog_getPageDict(pageIndex) {
-            var promise = new LegacyPromise();
+            var promise = createPromiseCapability();
             var nodesToVisit = [this.catDict.getRaw('Pages')];
             var currentPageIndex = 0;
             var xref = this.xref;

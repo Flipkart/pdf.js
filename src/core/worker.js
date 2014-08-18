@@ -38,7 +38,7 @@ var WorkerMessageHandler = PDFJS.WorkerMessageHandler = {
           var doc = {
             numPages: results[0],
             fingerprint: results[1],
-            encrypted: !!results[2],
+            encrypted: !!results[2]
           };
           loadDocumentCapability.resolve(doc);
         },
@@ -161,7 +161,7 @@ var WorkerMessageHandler = PDFJS.WorkerMessageHandler = {
 //      });
         source.length=PdfObjectParser_FK.PDF_FK["streamLength"];
         pdfManager = new NetworkPdfManager(source, handler);
-        pdfManagerPromise.resolve(pdfManager);
+        pdfManagerCapability.resolve(pdfManager);
       return pdfManagerCapability.promise;
     }
 

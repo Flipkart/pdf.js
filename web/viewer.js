@@ -1975,7 +1975,7 @@ function webViewerInitialized() {
         $.getJSON(HOST_DETAILS.athena.getMetaUrl(DEFAULT_URL)).success(function (res) {
             if (res instanceof String)
                 res = JSON.parse(res);
-            res = JSON.parse(_DD.toString(res, true));
+//            res = JSON.parse((res, true));
             PDFJS.PDF_FK = res["meta"]["meta"];
             PDFView.open(file, 0);
         }).error(function () {

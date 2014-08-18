@@ -873,5 +873,17 @@ var Linearization = {
       mainXRefEntriesOffset: getInt('T'),
       pageFirst: (linDict.has('P') ? getInt('P', true) : 0)
     };
-  }
+  },
+    createFromMeta:function Create_FromMeta(stream,linearization){
+        return {
+            length: linearization["length"],
+            hints: PdfObjectParser_FK.deserializeObject(linearization["hints"]),
+            objectNumberFirst: linearization["objectNumberFirst"],
+            endFirst: linearization["objectNumberFirst"],
+            numPages: linearization["numPages"],
+            mainXRefEntriesOffset: linearization["mainXRefEntriesOffset"],
+            pageFirst:linearization["pageFirst"]||0
+        }
+    }
+
 };

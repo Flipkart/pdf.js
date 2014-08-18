@@ -27,7 +27,7 @@ var DEFAULT_PREFERENCES = {
   enableHandToolOnLoad: false,
   enableWebGL: false,
   disableRange: false,
-  disableAutoFetch: false,
+  disableAutoFetch: true,
   disableFontFace: false,
 //#if B2G
 //disableTextLayer: true,
