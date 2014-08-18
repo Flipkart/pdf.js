@@ -460,15 +460,18 @@ var PDFDocument = (function PDFDocumentClosure() {
         PdfObjectParser_FK.PDF_FK["catalog"] = serializedCatalog;
         PdfObjectParser_FK.PDF_FK["linearization"] = PdfObjectParser_FK.serializeObject(this.linearization);
         var startXRef=this.startXRef;
-        var streamPos=this.xref.stream.pos;
+//        var streamPos=this.xref.stream.pos;
         PdfObjectParser_FK.PDF_FK["streamLength"]=this.xref.stream.bytes.length;
-//        for(var i=startXRef;i<streamPos;i++){
-//            this.xref.stream.bytes[i]=10+10*Math.random();
-//        }
-        PdfObjectParser_FK.PDF_FK['stream']=[];
-        PdfObjectParser_FK.PDF_FK['stream'].push({
-            'begin':startXRef,'end':streamPos
-        });
+        for(var i=startXRef;i<PdfObjectParser_FK.PDF_FK['stream'].length;i++){
+            var currentScrap=PdfObjectParser_FK.PDF_FK['stream'][i];
+            for(var j=currentScrap['begin'];j<currentScrap['end'];j++){
+                this.xref.stream.bytes[j]=10+10*Math.random();
+            }
+        }
+//        PdfObjectParser_FK.PDF_FK['stream']=[];
+//        PdfObjectParser_FK.PDF_FK['stream'].push({
+//            'begin':startXRef,'end':streamPos
+//        });
     },
     get numPages() {
       var linearization = this.linearization;

@@ -80,6 +80,18 @@ var PdfObjectParser_FK = {
             error('Invalid root reference');
         }
     },
+    addStreamPoints:function(begin,end){
+        if(begin<end){
+//            var endTemp=begin;
+//            begin=end;
+//            end=endTemp;
+            PdfObjectParser_FK.PDF_FK['stream']=PdfObjectParser_FK.PDF_FK['stream']||[];
+
+            PdfObjectParser_FK.PDF_FK['stream'].push({
+                'begin':begin,'end':end
+            });
+        }
+    },
     deserializeXref: function (xrefDummy) {
         var xRef = new XRef();
         for (var prp in xrefDummy) {

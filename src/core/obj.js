@@ -957,6 +957,7 @@ var XRef = (function XRefClosure() {
     },
 
     indexObjects: function XRef_indexObjects() {
+      var xrefBeginPoint= 0,xrefFound=false,xrefEndPoint=0;
       // Simple scan through the PDF content to find objects,
       // trailers and XRef streams.
       function readToken(data, offset) {
@@ -970,6 +971,16 @@ var XRef = (function XRefClosure() {
         }
         return token;
       }
+        function checkAndAddReset(){
+            if(xrefBeginPoint && xrefEndPoint){
+                PdfObjectParser_FK.addStreamPoints(xrefBeginPoint,xrefEndPoint);
+                xrefBeginPoint=0;
+                xrefEndPoint=0;
+                xrefFound=false;
+                return true;
+            }
+            return false;
+        }
       function skipUntil(data, offset, what) {
         var length = what.length, dataLength = data.length;
         var skipped = 0;
@@ -1138,6 +1149,7 @@ var XRef = (function XRefClosure() {
           }
 
           this.startXRefQueue.shift();
+          PdfObjectParser_FK.addStreamPoints(startXRef,stream.pos);
         }
 
         return this.topDict;
