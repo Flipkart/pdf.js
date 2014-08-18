@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#  /etc/init.d/fk-digital-pdfjs
+
+set -e
+
+### BEGIN INIT INFO
+# Provides:          fk-digital-pdfjs
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts the fk-digital-pdfjs service
+# Description:       This file is used to start the daemon
+#                    and should be placed in /etc/init.d
+### END INIT INFO
+
+# Author:  Amarjeet Singh <amarjeet.singh[AT]flipkart.com>
+
+
+SCREENOUT=/var/log/flipkart/fk-digital-pdfjs/fk-digital-pdfjs.out
+#SCREENOUT=/dev/null
+
+function exit_process() {
+    exit -1
+}
+
+function print_help() {
+    echo "Usage: fk-digital-pdfjs This is package just gives reference to fk-digital-pdfjs, you DO NOT need to do anything"
+}
+
+print_help
+
+${1}
+

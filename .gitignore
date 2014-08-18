@@ -5,3 +5,15 @@ tags
 .DS_Store
 Makefile
 node_modules/
+target/
+*.iml
+*.ipr
+*.iws
+.idea
+*.swp
+.project
+.svn
+.DS_Store
+*.orig
+*.log*
+dependency-reduced-pom.xml

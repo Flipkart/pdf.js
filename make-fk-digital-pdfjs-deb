@@ -1,0 +1,37 @@
+#! /bin/bash -e
+function die()
+{
+        echo "Error: $1" >&2
+        exit 1
+}
+[ -z "$LOCAL_DIR" ] && die "No LOCAL_DIR dir specified"
+[ -z "$TARGET" ] && die "No package target specified"
+[ -z "$INSTALL_BASE" ] && die "No install base specified"
+[ -z "$PACKAGE" ] && die "No package name specified"
+[ ! -d "$LOCAL_DIR" ] && die "$LOCAL_DIR does not exist"
+case "$TARGET" in
+        local) ENV=local;;
+        nm) ENV=nm;;
+        qa) ENV=eng;;
+        sb) ENV=sb;;
+        release) ENV=prod;;
+        stagech) ENV=stagech;;
+        stage) ENV=stage;;
+esac
+
+[ -z "$ENV" ] && die "Invalid target: $TARGET"
+MODULE=fk-digital-pdfjs
+
+PACKAGE=fk-digital-pdfjs
+DEB_DIR="${LOCAL_DIR}"/deb
+
+[ ! -d "$DEB_DIR" ] && mkdir "$DEB_DIR"
+
+#cp -pR "${LOCAL_DIR}"/build_essentials/DEBIAN "${DEB_DIR}"
+echo "BUILDING THE ENTIRE PROJECT"
+
+cd "${LOCAL_DIR}"
+
+mkdir -p "${DEB_DIR}"/etc/fk-digital-pdfjs/
+
+sed -i "s/_PACKAGE_/"${PACKAGE}"/g" "${DEB_DIR}"/DEBIAN/*
