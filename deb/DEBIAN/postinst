@@ -18,10 +18,12 @@ if [ "${1}" == "configure" ] ; then
 
     sudo mkdir -p /var/log/flipkart/fk-digital-pdfjs
     sudo mkdir -p /var/run/fk-digital-pdfjs
+    sudo mkdir -p /usr/share/fk-digital-pdfjs
     sudo mkdir -p /etc/fk-digital-pdfjs
     sudo chown -R ${DGT_UID}:${DGT_GID} /etc/fk-digital-pdfjs
     sudo chown -R ${DGT_UID}:${DGT_GID} /usr/lib/${PAC}
     sudo chown -R ${DGT_UID}:${DGT_GID} /var/log/flipkart/fk-digital-pdfjs
+    sudo chown -R ${DGT_UID}:${DGT_GID} /usr/share/fk-digital-pdfjs
     sudo chmod -R 777 /var/log/flipkart/fk-digital-pdfjs
     sudo chmod -R 777 /etc/init.d/fk-digital-pdfjs
     chmod 777 /etc/init.d/$PAC
