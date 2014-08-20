@@ -1,0 +1,7 @@
+Package: fk-digital-pdfjs
+Version: 1._VERSION_
+Architecture: all 
+Maintainer: digital-dev (digital-dev@flipkart.com)
+Depends: bash, chkconfig
+Section: flipkart/digital
+Description: Concurrent Session tracking Independent data source backend by Mongo
