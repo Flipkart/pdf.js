@@ -3,7 +3,7 @@
 PAC=fk-digital-pdfjs
 USER=fk-digital-pdfjs
 GROUP=fk-digital
-DGT_UID=9020
+DGT_UID=9095
 DGT_GID=9000
 
 if [ "${1}" == "configure" ] ; then
