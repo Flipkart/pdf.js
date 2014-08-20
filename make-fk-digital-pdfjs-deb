@@ -34,6 +34,6 @@ cd "${LOCAL_DIR}"
 
 mkdir -p "${DEB_DIR}"/etc/fk-digital-pdfjs/
 
-mkdir -p "usr/share/$PACKAGE" && cp -a ./ "usr/share/$PACKAGE"
+mkdir -p "usr/share/$PACKAGE"
 
 sed -i "s/_PACKAGE_/"${PACKAGE}"/g" "${DEB_DIR}"/DEBIAN/*
