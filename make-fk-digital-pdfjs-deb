@@ -31,5 +31,5 @@ mkdir -p "${DEB_DIR}"/usr/lib/${PACKAGE}
 #cp -pR "${LOCAL_DIR}"/build_essentials/DEBIAN "${DEB_DIR}"
 echo "BUILDING THE ENTIRE PROJECT"
 mkdir -p "${DEB_DIR}"/usr/share/${PACKAGE}
-cp -r ${LOCAL_DIR}/src"${DEB_DIR}"/usr/share/${PACKAGE}/
-cp -r ${LOCAL_DIR}/web "${DEB_DIR}"/usr/share/${PACKAGE}/
+cp -r ${LOCAL_DIR}/src ${DEB_DIR}/usr/share/${PACKAGE}/
+cp -r ${LOCAL_DIR}/web ${DEB_DIR}/usr/share/${PACKAGE}/
