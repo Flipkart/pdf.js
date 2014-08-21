@@ -1,4 +1,4 @@
-#! /bin/bash -e
+#! /bin/bash -ex
 
 PAC=fk-digital-pdfjs
 USER=fk-digital-pdfjs
@@ -16,14 +16,14 @@ if [ "${1}" == "configure" ] ; then
         adduser --system --uid ${DGT_UID} --home /usr/share/$PAC --no-create-home --ingroup ${GROUP} --disabled-password --shell /bin/false $USER
     fi
 
-    sudo mkdir -p /var/log/flipkart/fk-digital-pdfjs
-    sudo mkdir -p /var/run/fk-digital-pdfjs
-    sudo mkdir -p /usr/share/fk-digital-pdfjs
-    sudo mkdir -p /etc/fk-digital-pdfjs
-    sudo chown -R ${DGT_UID}:${DGT_GID} /etc/fk-digital-pdfjs
-    sudo chown -R ${DGT_UID}:${DGT_GID} /usr/lib/${PAC}
-    sudo chown -R ${DGT_UID}:${DGT_GID} /var/log/flipkart/fk-digital-pdfjs
-    sudo chown -R ${DGT_UID}:${DGT_GID} /usr/share/fk-digital-pdfjs
-    sudo chmod -R 777 /var/log/flipkart/fk-digital-pdfjs
+    mkdir -p /var/log/flipkart/${PAC}
+    mkdir -p /var/run/${PAC}
+    mkdir -p /usr/share/${PAC}
+    mkdir -p /etc/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /etc/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /usr/lib/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /var/log/flipkart/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /usr/share/${PAC}
+    chmod -R 777 /var/log/flipkart/${PAC}
 fi
 
