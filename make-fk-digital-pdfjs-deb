@@ -35,6 +35,6 @@ echo "moving to new directory"
 cd ../
 echo "found following files"
 ls
-mkdir -p "usr/share/$PACKAGE" && cp -a ../docs "usr/share/$PACKAGE"
+mkdir -p "usr/share/$PACKAGE" && cp -a ./ "usr/share/$PACKAGE/"
 
 sed -i "s/_PACKAGE_/"${PACKAGE}"/g" "${DEB_DIR}"/DEBIAN/*
