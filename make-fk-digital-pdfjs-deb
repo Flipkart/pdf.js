@@ -30,20 +30,7 @@ mkdir -p "${DEB_DIR}"/usr/lib/${PACKAGE}
 
 #cp -pR "${LOCAL_DIR}"/build_essentials/DEBIAN "${DEB_DIR}"
 echo "BUILDING THE ENTIRE PROJECT"
-cd "$DEB_DIR"
-pwd
-echo "moving to new directory"
-cd ../
-echo "found following files"
-ls
-mkdir -p "usr/share/$PACKAGE"
-cp -r src/ "usr/share/$PACKAGE/"
-cp -r web/ "usr/share/$PACKAGE/"
-cd src
-echo "files in src"
-ls
-cd web
-echo "files in web"
-ls
+mkdir -p "$DEB_DIR/usr/share/$PACKAGE"
+cp -r ./ "$DEB_DIR/usr/share/$PACKAGE/"
 
 sed -i "s/_PACKAGE_/"${PACKAGE}"/g" "${DEB_DIR}"/DEBIAN/*
