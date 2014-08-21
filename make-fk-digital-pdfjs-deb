@@ -27,7 +27,6 @@ DEB_DIR="${LOCAL_DIR}"/deb
 [ ! -d "$DEB_DIR" ] && mkdir "$DEB_DIR"
 
 mkdir -p "${DEB_DIR}"/usr/lib/${PACKAGE}
-mkdir -p "${DEB_DIR}"/etc/init.d
 
 #cp -pR "${LOCAL_DIR}"/build_essentials/DEBIAN "${DEB_DIR}"
 echo "BUILDING THE ENTIRE PROJECT"
