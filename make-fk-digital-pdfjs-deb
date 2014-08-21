@@ -29,19 +29,12 @@ DEB_DIR="${LOCAL_DIR}"/deb
 
 #cp -pR "${LOCAL_DIR}"/build_essentials/DEBIAN "${DEB_DIR}"
 echo "BUILDING THE ENTIRE PROJECT"
-
-cd "${LOCAL_DIR}"
-
-mkdir -p "${DEB_DIR}"/etc/fk-digital-pdfjs/
-
-mkdir -p "usr/share/$PACKAGE"
-
-echo "${LOCAL_DIR}"
-
-cd "${LOCAL_DIR}/docs"
-
+cd "$DEB_DIR"
+pwd
+echo "moving to new directory"
+cd ../
+echo "found following files"
 ls
-
-cp -a "${LOCAL_DIR}/docs" "usr/share/$PACKAGE/"
+mkdir -p "usr/share/$PACKAGE" && cp -a ../docs "usr/share/$PACKAGE"
 
 sed -i "s/_PACKAGE_/"${PACKAGE}"/g" "${DEB_DIR}"/DEBIAN/*
