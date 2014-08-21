@@ -36,6 +36,14 @@ echo "moving to new directory"
 cd ../
 echo "found following files"
 ls
-mkdir -p "usr/share/$PACKAGE" && cp -a {$LOCAL_DIR}/src/ "usr/share/$PACKAGE/" && cp -a {$LOCAL_DIR}/web/ "usr/share/$PACKAGE/"
+mkdir -p "usr/share/$PACKAGE"
+cp -r src/ "usr/share/$PACKAGE/"
+cp -r web/ "usr/share/$PACKAGE/"
+cd src
+echo "files in src"
+ls
+cd web
+echo "files in web"
+ls
 
 sed -i "s/_PACKAGE_/"${PACKAGE}"/g" "${DEB_DIR}"/DEBIAN/*
