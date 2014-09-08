@@ -13,17 +13,18 @@ if [ "${1}" == "configure" ] ; then
     fi
 
     if ! getent passwd ${DGT_UID} > /dev/null; then
+        deluser --system --uid ${DGT_UID}
         adduser --system --uid ${DGT_UID} --home /usr/share/$PAC --no-create-home --ingroup ${GROUP} --disabled-password --shell /bin/false $USER
     fi
 
     mkdir -p /var/log/flipkart/${PAC}
     mkdir -p /var/run/${PAC}
-    mkdir -p /usr/share/${PAC}
     mkdir -p /etc/${PAC}
     chown -R ${DGT_UID}:${DGT_GID} /etc/${PAC}
     chown -R ${DGT_UID}:${DGT_GID} /usr/lib/${PAC}
     chown -R ${DGT_UID}:${DGT_GID} /var/log/flipkart/${PAC}
     chown -R ${DGT_UID}:${DGT_GID} /usr/share/${PAC}
+    sudo chmod -R 777 /usr/share/${PAC}
     chmod -R 777 /var/log/flipkart/${PAC}
 fi
 
