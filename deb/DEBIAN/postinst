@@ -1,9 +1,9 @@
-#! /bin/bash -e
+#! /bin/bash -ex
 
 PAC=fk-digital-pdfjs
 USER=fk-digital-pdfjs
 GROUP=fk-digital
-DGT_UID=9020
+DGT_UID=9095
 DGT_GID=9000
 
 if [ "${1}" == "configure" ] ; then
@@ -13,21 +13,18 @@ if [ "${1}" == "configure" ] ; then
     fi
 
     if ! getent passwd ${DGT_UID} > /dev/null; then
+        deluser --system --uid ${DGT_UID}
         adduser --system --uid ${DGT_UID} --home /usr/share/$PAC --no-create-home --ingroup ${GROUP} --disabled-password --shell /bin/false $USER
     fi
 
-    sudo mkdir -p /var/log/flipkart/fk-digital-pdfjs
-    sudo mkdir -p /var/run/fk-digital-pdfjs
-    sudo mkdir -p /usr/share/fk-digital-pdfjs
-    sudo mkdir -p /etc/fk-digital-pdfjs
-    sudo chown -R ${DGT_UID}:${DGT_GID} /etc/fk-digital-pdfjs
-    sudo chown -R ${DGT_UID}:${DGT_GID} /usr/lib/${PAC}
-    sudo chown -R ${DGT_UID}:${DGT_GID} /var/log/flipkart/fk-digital-pdfjs
-    sudo chown -R ${DGT_UID}:${DGT_GID} /usr/share/fk-digital-pdfjs
-    sudo chmod -R 777 /var/log/flipkart/fk-digital-pdfjs
-    sudo chmod -R 777 /etc/init.d/fk-digital-pdfjs
-    chmod 777 /etc/init.d/$PAC
-    update-rc.d $PAC defaults
-    /sbin/chkconfig --add $PAC
+    mkdir -p /var/log/flipkart/${PAC}
+    mkdir -p /var/run/${PAC}
+    mkdir -p /etc/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /etc/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /usr/lib/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /var/log/flipkart/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /usr/share/${PAC}
+    sudo chmod -R 777 /usr/share/${PAC}
+    chmod -R 777 /var/log/flipkart/${PAC}
 fi
 

@@ -4,4 +4,4 @@ Architecture: all
 Maintainer: digital-dev (digital-dev@flipkart.com)
 Depends: bash, chkconfig
 Section: flipkart/digital
-Description: Concurrent Session tracking Independent data source backend by Mongo
+Description: pdf js for pdf chunker

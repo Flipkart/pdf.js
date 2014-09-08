@@ -1,4 +1,4 @@
-#! /bin/bash -e
+#! /bin/bash -ex
 function die()
 {
         echo "Error: $1" >&2
@@ -24,16 +24,12 @@ MODULE=fk-digital-pdfjs
 
 PACKAGE=fk-digital-pdfjs
 DEB_DIR="${LOCAL_DIR}"/deb
-
 [ ! -d "$DEB_DIR" ] && mkdir "$DEB_DIR"
+
+mkdir -p "${DEB_DIR}"/usr/lib/${PACKAGE}
 
 #cp -pR "${LOCAL_DIR}"/build_essentials/DEBIAN "${DEB_DIR}"
 echo "BUILDING THE ENTIRE PROJECT"
-
-cd "${LOCAL_DIR}"
-
-mkdir -p "${DEB_DIR}"/etc/fk-digital-pdfjs/
-
-mkdir -p "usr/share/$PACKAGE"
-
-sed -i "s/_PACKAGE_/"${PACKAGE}"/g" "${DEB_DIR}"/DEBIAN/*
+mkdir -p "${DEB_DIR}"/usr/share/${PACKAGE}
+cp -r ${LOCAL_DIR}/src ${DEB_DIR}/usr/share/${PACKAGE}/
+cp -r ${LOCAL_DIR}/web ${DEB_DIR}/usr/share/${PACKAGE}/
