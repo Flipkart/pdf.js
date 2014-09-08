@@ -1,0 +1,29 @@
+#! /bin/bash -ex
+
+PAC=fk-digital-pdfjs
+USER=fk-digital-pdfjs
+GROUP=fk-digital
+DGT_UID=9095
+DGT_GID=9000
+
+if [ "${1}" == "configure" ] ; then
+
+    if ! getent group fk-digital > /dev/null; then
+        groupadd -g ${DGT_GID} fk-digital
+    fi
+
+    if ! getent passwd ${DGT_UID} > /dev/null; then
+        adduser --system --uid ${DGT_UID} --home /usr/share/$PAC --no-create-home --ingroup ${GROUP} --disabled-password --shell /bin/false $USER
+    fi
+
+    mkdir -p /var/log/flipkart/${PAC}
+    mkdir -p /var/run/${PAC}
+    mkdir -p /usr/share/${PAC}
+    mkdir -p /etc/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /etc/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /usr/lib/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /var/log/flipkart/${PAC}
+    chown -R ${DGT_UID}:${DGT_GID} /usr/share/${PAC}
+    chmod -R 777 /var/log/flipkart/${PAC}
+fi
+
