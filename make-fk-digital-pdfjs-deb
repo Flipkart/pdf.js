@@ -33,3 +33,7 @@ echo "BUILDING THE ENTIRE PROJECT"
 mkdir -p "${DEB_DIR}"/usr/share/${PACKAGE}
 cp -r ${LOCAL_DIR}/src ${DEB_DIR}/usr/share/${PACKAGE}/
 cp -r ${LOCAL_DIR}/web ${DEB_DIR}/usr/share/${PACKAGE}/
+cp -r ${LOCAL_DIR}/docs ${DEB_DIR}/usr/share/${PACKAGE}/
+cp -r ${LOCAL_DIR}/extensions ${DEB_DIR}/usr/share/${PACKAGE}/
+cp -r ${LOCAL_DIR}/external ${DEB_DIR}/usr/share/${PACKAGE}/
+cp -r ${LOCAL_DIR}/l10n ${DEB_DIR}/usr/share/${PACKAGE}/
