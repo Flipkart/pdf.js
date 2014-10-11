@@ -13,7 +13,6 @@ if [ "${1}" == "configure" ] ; then
     fi
 
     if ! getent passwd ${DGT_UID} > /dev/null; then
-        deluser --system --uid ${DGT_UID}
         adduser --system --uid ${DGT_UID} --home /usr/share/$PAC --no-create-home --ingroup ${GROUP} --disabled-password --shell /bin/false $USER
     fi
 
